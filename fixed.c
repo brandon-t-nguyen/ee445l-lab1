@@ -73,9 +73,13 @@ void ST7735_uBinOut8(uint32_t n)
         int32_t currentDigit = integer/divider;
         // only print a digit if it's not a 0
         if( currentDigit != 0 )
+        {
             ST7735_OutChar('0' + currentDigit);
+        }
         else
+        {
             ST7735_OutChar(' ');
+        }
         integer -= currentDigit * divider;
     }
     ST7735_OutChar('0' + integer);  // capture the 1's place
@@ -106,11 +110,11 @@ void ST7735_uBinOut8(uint32_t n)
 
 #define AXIS_COLOR 0x0000
 #define PLOT_COLOR 0x12CE
-static uint32_t plotH = LCD_HEIGHT;
-static uint32_t plotW = LCD_WIDTH;
-static uint32_t originX = 0;
-static uint32_t originY = 0;
-static int32_t loX, hiX, loY, hiY, virtualW, virtualH;
+static uint32_t PlotH = LCD_HEIGHT;
+static uint32_t PlotW = LCD_WIDTH;
+static uint32_t OriginX = 0;
+static uint32_t OriginY = 0;
+static int32_t MinX, MaxX, MinY, MaxY, VirtualW, VirtualH;
 
 // Converts a set of virtual coordinates to pixel location
 // vX and vY are virtual coordinates
@@ -119,54 +123,65 @@ static int32_t loX, hiX, loY, hiY, virtualW, virtualH;
 static void convertCoord( const int32_t vX, const int32_t vY, uint32_t *paX, uint32_t *paY )
 {
     // get our virtual offsets
-    int32_t vOffsetX = vX - loX;
-    int32_t vOffsetY = vY - loY;
+    int32_t vOffsetX = vX - MinX;
+    int32_t vOffsetY = vY - MinY;
 
     // get our absolute pixel offsets
-    int32_t aOffsetX = vOffsetX * LCD_WIDTH  / virtualW;
-    int32_t aOffsetY = vOffsetY * LCD_HEIGHT / virtualH;
+    int32_t aOffsetX = vOffsetX * LCD_WIDTH  / VirtualW;
+    int32_t aOffsetY = vOffsetY * LCD_HEIGHT / VirtualH;
 
     // get our final pixel values
     *paX = aOffsetX;
     *paY = LCD_HEIGHT - aOffsetY;
     
-    if( vX < loX || vX > hiX )
+    if( vX < MinX || vX > MaxX )
+    {
         *paX = OUT_OF_BOUNDS;
-    if( vY < loY || vY > hiY )
+    }
+    if( vY < MinY || vY > MaxY )
+    {
         *paY = OUT_OF_BOUNDS;
+    }
 }
 
 void ST7735_XYplotInit(char *title, int32_t minX, int32_t maxX, int32_t minY, int32_t maxY)
 {
-    loX = minX;
-    hiX = maxX;
-    loY = minY;
-    hiY = maxY;
+    MinX = minX;
+    MaxX = maxX;
+    MinY = minY;
+    MaxY = maxY;
     int numLines = 1;                   // first line takes up text
     char *c = title;
     while(*c)
     {
-        numLines += (*c=='\n')? 1 : 0;  // count number of lines
+        if(*c=='\n')
+        {
+            ++numLines;  // count number of lines
+        }
         ++c;
     }
 
-    originY = CHAR_HEIGHT * numLines;
-    plotH = LCD_HEIGHT - originY;
-    virtualW = hiX-loX;
-    virtualH = hiY-loY;
+    OriginY = CHAR_HEIGHT * numLines;
+    PlotH = LCD_HEIGHT - OriginY;
+    VirtualW = MaxX-MinX;
+    VirtualH = MaxY-MinY;
 
     ST7735_SetCursor(0,0);
     ST7735_OutString(title);
-    ST7735_FillRect(originX,originY,plotW,plotH,0xFFFF); // white out the plot area
+    ST7735_FillRect(OriginX,OriginY,PlotW,PlotH,0xFFFF); // white out the plot area
 
     // draw our axis lines
     uint32_t xAxis;
     uint32_t yAxis;
     convertCoord(0,0,&xAxis,&yAxis);
     if( xAxis != OUT_OF_BOUNDS)
-        ST7735_DrawFastVLine(xAxis,originY,plotH,AXIS_COLOR);
+    {
+        ST7735_DrawFastVLine(xAxis,OriginY,PlotH,AXIS_COLOR);
+    }
     if( yAxis != OUT_OF_BOUNDS)
-        ST7735_DrawFastHLine(originX,yAxis,plotW,AXIS_COLOR);
+    {
+        ST7735_DrawFastHLine(OriginX,yAxis,PlotW,AXIS_COLOR);
+    }
 }
 
 void ST7735_XYplot(uint32_t num, int32_t bufX[], int32_t bufY[])
@@ -176,7 +191,9 @@ void ST7735_XYplot(uint32_t num, int32_t bufX[], int32_t bufY[])
     {
         convertCoord(bufX[i],bufY[i],&x,&y);
         if( x != OUT_OF_BOUNDS && y != OUT_OF_BOUNDS )
+        {
             ST7735_DrawPixel(x,y,PLOT_COLOR);
+        }
     }
 }
 

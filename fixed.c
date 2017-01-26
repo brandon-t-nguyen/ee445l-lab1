@@ -72,20 +72,22 @@ void ST7735_uBinOut8(uint32_t n)
   
   // print the integer part first
   uint32_t integer = n >> 8;
-  for(int32_t divider=100; integer >= 10; divider/=10)
+  int isLeadingDigit = 1;
+  for(int32_t divider=100; divider > 1; divider/=10)
   {
     int32_t currentDigit = integer/divider;
-    // only print a digit if it's not a 0
-    if( currentDigit != 0 )
-    {
-      ST7735_OutChar('0' + currentDigit);
-    }
-    else
+    if(currentDigit == 0 && isLeadingDigit)
     {
       ST7735_OutChar(' ');
     }
+    else
+    {
+      ST7735_OutChar('0' + currentDigit);
+      isLeadingDigit = 0;
+    }
     integer -= currentDigit * divider;
   }
+
   ST7735_OutChar('0' + integer);  // capture the 1's place
   ST7735_OutChar('.');
 

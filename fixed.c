@@ -112,7 +112,7 @@ void ST7735_uBinOut8(uint32_t n)
 #define LCD_HEIGHT ST7735_TFTHEIGHT
 #define LCD_WIDTH ST7735_TFTWIDTH
 #define OUT_OF_BOUNDS 0xFFFFFFFF
-#define CHAR_HEIGHT 8
+#define CHAR_HEIGHT 10
 
 #define AXIS_COLOR 0x0000
 #define PLOT_COLOR 0x12CE
@@ -134,7 +134,7 @@ static void convertCoord( const int32_t vX, const int32_t vY, uint32_t *paX, uin
 
   // get our absolute pixel offsets
   int32_t aOffsetX = vOffsetX * LCD_WIDTH  / VirtualW;
-  int32_t aOffsetY = vOffsetY * LCD_HEIGHT / VirtualH;
+  int32_t aOffsetY = vOffsetY * LCD_WIDTH /  VirtualW;  // share scaling
 
   // get our final pixel values
   *paX = aOffsetX;

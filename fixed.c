@@ -74,29 +74,34 @@ void ST7735_uBinOut8(uint32_t n) {
 }
 
 uint32_t Xmin, Xmax, Ymin, Ymax;
-
-
-uint32_t convertXCoord(int32_t in, uint32_t out) {
-    if(in < Xmin || in > Xmax) {
-        
-    }
-}
-
-uint32_t convertYCoord(int32_t in, uint32_t out) {
-    
-}
+uint32_t XRange, YRange;
 
 void ST7735_XYplotInit(char *title, int32_t minX, int32_t maxX, int32_t minY, int32_t maxY) {
     Xmin = minX;
     Xmax = maxX;
+    XRange = maxX - minX;
+    
     Ymin = minY;
     Ymax = maxY;
-    ST7735_FillRect(Xmin, Ymin, Xmax-Xmin, Ymax-Ymin, 0xFFFF);
+    YRange = maxY - minY;
+    
+     // draw title
+    ST7735_SetCursor(0,0);
+    ST7735_OutString(title);
+    
+     // clear plot area
+    ST7735_FillRect(0, 8, 128, 152, 0xFFFF);
 }
 
-void ST7735_XYplot(uint32_t num, int32_t bufX[], int32_t bufY[])
-{
-  // TODO
+void ST7735_XYplot(uint32_t num, int32_t bufX[], int32_t bufY[]) {
+    for(int i = 0; i < num; i++) {
+        uint32_t x, y;
+        if (bufX[i] < Xmax && bufX[i] > Xmin && bufY[i] > Ymin && bufY[i] < Ymax) {
+            x = (bufX[i] - Xmin)/XRange * 128;
+            y = (bufY[i] - Ymin)/YRange * 152;
+            ST7735_DrawPixel(x, y, 0);
+        }
+    }
 }
 
 

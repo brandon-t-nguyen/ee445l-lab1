@@ -26,7 +26,7 @@ void ST7735_sDecOut3(int32_t n) {
          // print number
          // extract each decimal place and co
         ST7735_OutChar(n/1000 + '0');
-        nh %= 1000;
+        n %= 1000;
         ST7735_OutChar('.');
         ST7735_OutChar(n/100 + '0');
         n %= 100;
@@ -73,7 +73,8 @@ void ST7735_uBinOut8(uint32_t n) {
     }
 }
 
-uint32_t Xmin, Xmax, Ymin, Ymax;
+ // I used this lame naming for Y because "Ymin" is already defined =(
+uint32_t Xmin, Xmax, Y0, Y;
 uint32_t XRange, YRange;
 
 void ST7735_XYplotInit(char *title, int32_t minX, int32_t maxX, int32_t minY, int32_t maxY) {
@@ -81,8 +82,8 @@ void ST7735_XYplotInit(char *title, int32_t minX, int32_t maxX, int32_t minY, in
     Xmax = maxX;
     XRange = maxX - minX;
     
-    Ymin = minY;
-    Ymax = maxY;
+    Y0 = minY;
+    Y = maxY;
     YRange = maxY - minY;
     
      // draw title
@@ -96,9 +97,9 @@ void ST7735_XYplotInit(char *title, int32_t minX, int32_t maxX, int32_t minY, in
 void ST7735_XYplot(uint32_t num, int32_t bufX[], int32_t bufY[]) {
     for(int i = 0; i < num; i++) {
         uint32_t x, y;
-        if (bufX[i] < Xmax && bufX[i] > Xmin && bufY[i] > Ymin && bufY[i] < Ymax) {
+        if (bufX[i] < Xmax && bufX[i] > Xmin && bufY[i] > Y0 && bufY[i] < Y) {
             x = (bufX[i] - Xmin)/XRange * 128;
-            y = (bufY[i] - Ymin)/YRange * 152;
+            y = (bufY[i] - Y0)/YRange * 152;
             ST7735_DrawPixel(x, y, 0);
         }
     }

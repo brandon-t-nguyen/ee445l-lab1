@@ -421,9 +421,14 @@
               <FilePath>.\ST7735.c</FilePath>
             </File>
             <File>
-              <FileName>ST7735TestMain.c</FileName>
+              <FileName>fixed.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\ST7735TestMain.c</FilePath>
+              <FilePath>.\fixed.c</FilePath>
+            </File>
+            <File>
+              <FileName>Lab1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Lab1.c</FilePath>
             </File>
           </Files>
         </Group>

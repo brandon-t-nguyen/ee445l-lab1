@@ -174,11 +174,11 @@ void ST7735_XYplotInit(char *title, int32_t minX, int32_t maxX, int32_t minY, in
   uint32_t xAxis;
   uint32_t yAxis;
   convertCoord(0,0,&xAxis,&yAxis);
-  if( xAxis != OUT_OF_BOUNDS)
+  if( xAxis != OUT_OF_BOUNDS )
   {
     ST7735_DrawFastVLine(xAxis,OriginY,PlotH,AXIS_COLOR);
   }
-  if( yAxis != OUT_OF_BOUNDS)
+  if( yAxis != OUT_OF_BOUNDS )
   {
     ST7735_DrawFastHLine(OriginX,yAxis,PlotW,AXIS_COLOR);
   }

@@ -22,6 +22,10 @@ void ST7735_sDecOut3(int32_t n)
     n = -n;
     ST7735_OutChar('-');
   }
+  else
+  {
+    ST7735_OutChar(' ');
+  }
 
   // to unroll a loop or not unroll a loop, that is the question
   int32_t currentDigit = n/1000;

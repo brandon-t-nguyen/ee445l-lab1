@@ -24,11 +24,15 @@ void ST7735_sDecOut3(int32_t n) {
         }
         
          // print number
-         // extract each decimal place and add 48 to convert to ascii
-        ST7735_OutChar(n/1000 + 48);
-        ST7735_OutChar((n-n/1000)/100 + 48);
-        ST7735_OutChar((n-n/100)/10 + 48);
-        ST7735_OutChar(n - n/10 + 48);
+         // extract each decimal place and co
+        ST7735_OutChar(n/1000 + '0');
+        n %= 1000;
+        ST7735_OutChar('.');
+        ST7735_OutChar(n/100 + '0');
+        n %= 100;
+        ST7735_OutChar(n/10 + '0');
+        n %= 10;
+        ST7735_OutChar(n + '0');
     }
 }
 
@@ -36,8 +40,11 @@ uint32_t overflow_bin = 256000;
 char* overflowOut_bin = "***.**";
 
 void ST7735_uBinOut8(uint32_t n) {
+     // check for overflow
     if(n >= overflow_bin) {
         ST7735_OutString(overflowOut_bin);
+    } else {
+        
     }
 }
 

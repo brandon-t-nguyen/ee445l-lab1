@@ -115,6 +115,7 @@ static int32_t loX, hiX, loY, hiY, virtualW, virtualH;
 // Converts a set of virtual coordinates to pixel location
 // vX and vY are virtual coordinates
 // paX and paY are output pointers to write to
+// This is currently set up for auto-scaling of axes
 static void convertCoord( const int32_t vX, const int32_t vY, uint32_t *paX, uint32_t *paY )
 {
     // get our virtual offsets

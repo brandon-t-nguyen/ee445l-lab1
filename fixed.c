@@ -28,7 +28,11 @@ void ST7735_sDecOut3(int32_t n)
     ST7735_OutChar('0' + currentDigit);
     ST7735_OutChar('.');
     n = n - currentDigit * 1000;
-
+    
+    // here's a unrolled and rolled implementation
+    //#define UNROLL
+    #if defined UNROLL
+    //////////////////////////////////////////////////
     currentDigit = n/100;
     ST7735_OutChar('0' + currentDigit);
     n = n - currentDigit * 100;
@@ -39,6 +43,18 @@ void ST7735_sDecOut3(int32_t n)
 
     // n is already < 10
     ST7735_OutChar('0' + n);
+    //////////////////////////////////////////////////
+    #undef UNROLL
+    #else
+    //////////////////////////////////////////////////
+    for(int32_t divider=100; divider > 0; divider/=10)
+    {
+        currentDigit = n/divider;
+        ST7735_OutChar('0' + currentDigit);
+        n = n - currentDigit * divider;
+    }
+    //////////////////////////////////////////////////
+    #endif
 }
 
 void ST7735_uBinOut8(uint32_t n)

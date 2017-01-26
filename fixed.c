@@ -26,7 +26,7 @@ void ST7735_sDecOut3(int32_t n) {
          // print number
          // extract each decimal place and co
         ST7735_OutChar(n/1000 + '0');
-        n %= 1000;
+        nh %= 1000;
         ST7735_OutChar('.');
         ST7735_OutChar(n/100 + '0');
         n %= 100;
@@ -44,13 +44,54 @@ void ST7735_uBinOut8(uint32_t n) {
     if(n >= overflow_bin) {
         ST7735_OutString(overflowOut_bin);
     } else {
+         // print int part of n
+        uint16_t nInt = n >> 8;
+        if(nInt >= 100) {
+            ST7735_OutChar(' ');
+        } else {
+            ST7735_OutChar(nInt/100 + '0');
+            nInt %= 100;
+        }
+        
+        if(nInt >= 10) {
+            ST7735_OutChar(' ');
+        } else {
+            ST7735_OutChar(nInt/10 + '0');
+            nInt %= 10;
+        }
+        
+        ST7735_OutChar(nInt + '0');
+        ST7735_OutChar('.');
+        n &= 0x0ff;
+        
+         // turn into decimal fixed point and extract the fractional portion
+        n = (n * 100) >> 8;
+        
+        ST7735_OutChar(n/10 + '0');
+        n %= 10;
+        ST7735_OutChar(n + '0');
+    }
+}
+
+uint32_t Xmin, Xmax, Ymin, Ymax;
+
+
+uint32_t convertXCoord(int32_t in, uint32_t out) {
+    if(in < Xmin || in > Xmax) {
         
     }
 }
 
-void ST7735_XYplotInit(char *title, int32_t minX, int32_t maxX, int32_t minY, int32_t maxY)
-{
-  // TODO
+uint32_t convertYCoord(int32_t in, uint32_t out) {
+    
+}
+
+void ST7735_XYplotInit(char *title, int32_t minX, int32_t maxX, int32_t minY, int32_t maxY) {
+    Xmin = minX;
+    Xmax = maxX;
+    Ymin = minY;
+    Ymax = maxY;
+    ST7735_FillRect(Xmin, Ymin, Xmax-Xmin, Ymax-Ymin, 0xFFFF);
 }
 
 void ST7735_XYplot(uint32_t num, int32_t bufX[], int32_t bufY[])

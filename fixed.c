@@ -19,6 +19,7 @@ void ST7735_sDecOut3(int32_t n) {
          // test sign bit
         if (n < 0) {
             ST7735_OutChar('-');
+						n = -1 * n;
         } else {
             ST7735_OutChar(' ');
         }
@@ -44,16 +45,18 @@ void ST7735_uBinOut8(uint32_t n) {
     if(n >= overflow_bin) {
         ST7735_OutString(overflowOut_bin);
     } else {
+				uint8_t printzero = 0;
          // print int part of n
         uint16_t nInt = n >> 8;
-        if(nInt >= 100) {
+        if(nInt < 100) {
             ST7735_OutChar(' ');
         } else {
             ST7735_OutChar(nInt/100 + '0');
             nInt %= 100;
+						printzero = 1;
         }
         
-        if(nInt >= 10) {
+        if(nInt < 10 && !printzero) {
             ST7735_OutChar(' ');
         } else {
             ST7735_OutChar(nInt/10 + '0');
@@ -74,8 +77,8 @@ void ST7735_uBinOut8(uint32_t n) {
 }
 
  // I used this lame naming for Y because "Ymin" is already defined =(
-uint32_t Xmin, Xmax, Y0, Y;
-uint32_t XRange, YRange;
+int32_t Xmin, Xmax, Y0, Y;
+int32_t XRange, YRange;
 
 void ST7735_XYplotInit(char *title, int32_t minX, int32_t maxX, int32_t minY, int32_t maxY) {
     Xmin = minX;
@@ -96,10 +99,10 @@ void ST7735_XYplotInit(char *title, int32_t minX, int32_t maxX, int32_t minY, in
 
 void ST7735_XYplot(uint32_t num, int32_t bufX[], int32_t bufY[]) {
     for(int i = 0; i < num; i++) {
-        uint32_t x, y;
+        int32_t x, y;
         if (bufX[i] < Xmax && bufX[i] > Xmin && bufY[i] > Y0 && bufY[i] < Y) {
-            x = (bufX[i] - Xmin)/XRange * 128;
-            y = (bufY[i] - Y0)/YRange * 152;
+            x = (-1 * bufX[i] - Xmin) * 128 / XRange;
+            y = (-1 * bufY[i] - Y0) * 152 / YRange;
             ST7735_DrawPixel(x, y, 0);
         }
     }

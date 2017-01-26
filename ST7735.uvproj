@@ -430,6 +430,26 @@
               <FileType>1</FileType>
               <FilePath>.\Lab1.c</FilePath>
             </File>
+            <File>
+              <FileName>fixed.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\fixed.h</FilePath>
+            </File>
+            <File>
+              <FileName>PLL.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\PLL.h</FilePath>
+            </File>
+            <File>
+              <FileName>ST7735.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\ST7735.h</FilePath>
+            </File>
+            <File>
+              <FileName>tm4c123gh6pm.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\tm4c123gh6pm.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

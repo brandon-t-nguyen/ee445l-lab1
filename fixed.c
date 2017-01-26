@@ -1,8 +1,7 @@
 // ******** fixed.c ************** 
-// possible header file for Lab 1 Spring 2017
-// feel free to change the specific syntax of your system
-// put your name here
-// put the date here
+// Brandon Nguyen
+// Ryan Syed
+// 01/25/2017
 
 #include <stdint.h>
 #include "fixed.h"

@@ -101,8 +101,8 @@ void ST7735_XYplot(uint32_t num, int32_t bufX[], int32_t bufY[]) {
     for(int i = 0; i < num; i++) {
         int32_t x, y;
         if (bufX[i] < Xmax && bufX[i] > Xmin && bufY[i] > Y0 && bufY[i] < Y) {
-            x = (-1 * bufX[i] - Xmin) * 128 / XRange;
-            y = (-1 * bufY[i] - Y0) * 152 / YRange;
+            x = (bufX[i] - Xmin) * 128 / XRange;
+            y = (bufY[i] - Y0) * -128 / YRange + 136;
             ST7735_DrawPixel(x, y, 0);
         }
     }

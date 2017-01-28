@@ -12,7 +12,7 @@
 #include "ST7735.h"
 
 const uint16_t OVERFLOW_DEC = 9999;
-const char* OVERFLOWOUT_DEC = " *.***";
+char* OVERFLOWOUT_DEC = " *.***";
 
 /****************ST7735_sDecOut3***************
  converts fixed point number to LCD
@@ -29,7 +29,7 @@ Parameter LCD display
   31  " 0.031" 
 -12345  " *.***"
  */ 
-void ST7735_sDecOut3(int32_t n) 
+void ST7735_sDecOut3(int32_t n) {
    // check for overflow
   if(n > OVERFLOW_DEC || n  < (-1 * OVERFLOW_DEC)) {
     ST7735_OutString(OVERFLOWOUT_DEC);
@@ -56,7 +56,7 @@ void ST7735_sDecOut3(int32_t n)
 }
 
 const uint32_t OVERFLOW_BIN = 256000;
-const char* OVRFLOWOUT_BIN = "***.**";
+char* OVERFLOWOUT_BIN = "***.**";
 
 /**************ST7735_uBinOut8***************
  unsigned 32-bit binary fixed-point with a resolution of 1/256. 
@@ -82,7 +82,7 @@ Parameter LCD display
 void ST7735_uBinOut8(uint32_t n) {
    // check for overflow
   if(n >= OVERFLOW_BIN) {
-    ST7735_OutString(OVRFLOWOUT_BIN);
+    ST7735_OutString(OVERFLOWOUT_BIN);
   } else {
 				uint8_t printzero = 0;
      // print int part of n

@@ -1,4 +1,4 @@
-// ******** fixed.c ************** 
+// ******** fixed.c **************
 // Brandon Nguyen
 // Ryan Syed
 // 01/25/2017
@@ -32,7 +32,7 @@ void ST7735_sDecOut3(int32_t n)
   ST7735_OutChar('0' + currentDigit);
   ST7735_OutChar('.');
   n = n - currentDigit * 1000;
-  
+
   // here's a unrolled and rolled implementation
   //#define UNROLL
   #if defined UNROLL
@@ -69,7 +69,7 @@ void ST7735_uBinOut8(uint32_t n)
     return;
   }
   // effectively what was specified was a 24_8 fixed point format
-  
+
   // print the integer part first
   uint32_t integer = n >> 8;
   int isLeadingDigit = 1;
@@ -91,7 +91,7 @@ void ST7735_uBinOut8(uint32_t n)
   ST7735_OutChar('0' + integer);  // capture the 1's place
   ST7735_OutChar('.');
 
-  
+
   // extract the fraction bits
   uint32_t fraction = n & 0xFF;
 
@@ -121,6 +121,8 @@ static uint32_t PlotW = LCD_WIDTH;
 static uint32_t OriginX = 0;
 static uint32_t OriginY = 0;
 static int32_t MinX, MaxX, MinY, MaxY, VirtualW, VirtualH;
+static int32_t AbsoluteDimension;
+static int32_t VirtualDimension;
 
 // Converts a set of virtual coordinates to pixel location
 // vX and vY are virtual coordinates
@@ -133,13 +135,13 @@ static void convertCoord( const int32_t vX, const int32_t vY, uint32_t *paX, uin
   int32_t vOffsetY = vY - MinY;
 
   // get our absolute pixel offsets
-  int32_t aOffsetX = vOffsetX * LCD_WIDTH  / VirtualW;
-  int32_t aOffsetY = vOffsetY * LCD_WIDTH /  VirtualW;  // share scaling
+  int32_t aOffsetX = vOffsetX * AbsoluteDimension / VirtualDimension;
+  int32_t aOffsetY = vOffsetY * AbsoluteDimension / VirtualDimension;  // share scaling
 
   // get our final pixel values
   *paX = aOffsetX;
   *paY = LCD_HEIGHT - aOffsetY;
-  
+
   if( vX < MinX || vX > MaxX )
   {
     *paX = OUT_OF_BOUNDS;
@@ -171,6 +173,16 @@ void ST7735_XYplotInit(char *title, int32_t minX, int32_t maxX, int32_t minY, in
   PlotH = LCD_HEIGHT - OriginY;
   VirtualW = MaxX-MinX;
   VirtualH = MaxY-MinY;
+  if(PlotH > PlotW)
+  {
+    AbsoluteDimension = PlotW;
+    VirtualDimension  = VirtualW;
+  }
+  else
+  {
+    AbsoluteDimension = PlotH;
+    VirtualDimension  = VirtualH;
+  }
 
   ST7735_SetCursor(0,0);
   ST7735_OutString(title);

@@ -64,48 +64,35 @@ void DelayWait10ms(uint32_t n){uint32_t volatile time;
 extern void Test3(void);
 extern void Test4(void);
 #define OFF 0x00000010
-int main(void){uint32_t i;
+
+typedef struct Testcase_str
+{
+  void (* func)(void);  // function to call
+  const char * name;    // test name
+} Testcase;
+
+Testcase tests[] = { {&Test1,"Test1 - C float"}, {&Test2,"Test1 - C fixed"},
+                     {&Test3,"Test3 - ASM float"}, {&Test4,"Test4 - ASM fixed"} };
+
+int main(void){
   PLL_Init(Bus80MHz);
   PortF_Init();
   ST7735_InitR(INITR_REDTAB);
   
+  int testIndex = 0;
   while(1)
   {
     ST7735_SetCursor(0,0);
-    ST7735_OutString("Test1 - C float");
+    ST7735_OutString("                   ");
+    ST7735_SetCursor(0,0);
+    ST7735_OutString(tests[testIndex].name);
     while(PF4 == OFF)
     {
-      Test1();
       PF2 ^= 0xFFFFFFFF;
+      tests[testIndex].func();
     }
     DelayWait10ms(100);
-    
-    ST7735_SetCursor(0,0);
-    ST7735_OutString("Test2 - C fixed");
-    while(PF4 == OFF)
-    {
-      Test2();
-      PF2 ^= 0xFFFFFFFF;
-    }
-    DelayWait10ms(100);    
-    
-    ST7735_SetCursor(0,0);
-    ST7735_OutString("Test3 - ASM float");
-    while(PF4 == OFF)
-    { 
-      Test3();
-      PF2 ^= 0xFFFFFFFF;
-    }
-    DelayWait10ms(100);
-    
-    ST7735_SetCursor(0,0);
-    ST7735_OutString("Test4 - ASM fixed");
-    while(PF4 == OFF)
-    { 
-      Test4();
-      PF2 ^= 0xFFFFFFFF;
-    }
-    DelayWait10ms(100);
+    testIndex = (testIndex + 1)%(sizeof(tests)/sizeof(tests[0]));
   }
 } 
 

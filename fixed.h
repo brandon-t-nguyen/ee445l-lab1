@@ -1,9 +1,11 @@
 // ******** fixed.h ************** 
-// possible header file for Lab 1 Spring 2017
-// feel free to change the specific syntax of your system
-// put your name here
-// put the date here
-
+// Ryan Syed, Brandon Nguyen
+// 1/24/2017
+// writes decimal and binary fixed point numbers
+// and plots data onto the ST77735
+// lab 1
+// TA: Cody Horton, Lavanya Venkatesan
+// last revised: 1/28/2017 
 
 /****************ST7735_sDecOut3***************
  converts fixed point number to LCD

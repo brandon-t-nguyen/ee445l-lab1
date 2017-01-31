@@ -426,9 +426,9 @@
               <FilePath>.\fixed.c</FilePath>
             </File>
             <File>
-              <FileName>Lab1.c</FileName>
+              <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\Lab1.c</FilePath>
+              <FilePath>.\main.c</FilePath>
             </File>
             <File>
               <FileName>fixed.h</FileName>

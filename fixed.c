@@ -159,7 +159,10 @@ void ST7735_XYplotInit(char *title, int32_t minX, int32_t maxX, int32_t minY, in
 void ST7735_XYplot(uint32_t num, int32_t bufX[], int32_t bufY[]) {
   for(int i = 0; i < num; i++) {
     int32_t x, y;
+		 
+		 // bounds checking
     if (bufX[i] < Xmax && bufX[i] > Xmin && bufY[i] > Yminimum && bufY[i] < Ymaximum) {
+			 // transform data to point on LCD
       x = (bufX[i] - Xmin) * 128 / XRange;
       y = (bufY[i] - Yminimum) * -128 / YRange + 136;
       ST7735_DrawPixel(x, y, 0);

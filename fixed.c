@@ -37,7 +37,7 @@ void ST7735_sDecOut3(int32_t n) {
      // test sign bit
     if (n < 0) {
       ST7735_OutChar('-');
-						n = -1 * n;
+      n = -1 * n;
     } else {
       ST7735_OutChar(' ');
     }
@@ -68,23 +68,23 @@ char* OVERFLOWOUT_BIN = "***.**";
  Outputs: none
  send exactly 6 characters to the LCD 
 Parameter LCD display
-   0	  "  0.00"
-   2	  "  0.01"
-  64	  "  0.25"
-   100	  "  0.39"
-   500	  "  1.95"
-   512	  "  2.00"
-  5000	  " 19.53"
- 30000	  "117.19"
-255997	  "999.99"
-256000	  "***.**"
+   0    "  0.00"
+   2    "  0.01"
+  64    "  0.25"
+   100    "  0.39"
+   500    "  1.95"
+   512    "  2.00"
+  5000    " 19.53"
+ 30000    "117.19"
+255997    "999.99"
+256000    "***.**"
 */
 void ST7735_uBinOut8(uint32_t n) {
    // check for overflow
   if(n >= OVERFLOW_BIN) {
     ST7735_OutString(OVERFLOWOUT_BIN);
   } else {
-				uint8_t printzero = 0;
+    uint8_t printzero = 0;
      // print int part of n
     uint16_t nInt = n >> 8;
     if(nInt < 100) {
@@ -92,7 +92,7 @@ void ST7735_uBinOut8(uint32_t n) {
     } else {
       ST7735_OutChar(nInt/100 + '0');
       nInt %= 100;
-						printzero = 1;
+            printzero = 1;
     }
     
     if(nInt < 10 && !printzero) {
@@ -159,10 +159,10 @@ void ST7735_XYplotInit(char *title, int32_t minX, int32_t maxX, int32_t minY, in
 void ST7735_XYplot(uint32_t num, int32_t bufX[], int32_t bufY[]) {
   for(int i = 0; i < num; i++) {
     int32_t x, y;
-		 
-		 // bounds checking
+     
+     // bounds checking
     if (bufX[i] < Xmax && bufX[i] > Xmin && bufY[i] > Yminimum && bufY[i] < Ymaximum) {
-			 // transform data to point on LCD
+       // transform data to point on LCD
       x = (bufX[i] - Xmin) * 128 / XRange;
       y = (bufY[i] - Yminimum) * -128 / YRange + 136;
       ST7735_DrawPixel(x, y, 0);

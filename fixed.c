@@ -4,7 +4,7 @@
 // writes decimal and binary fixed point numbers
 // and plots data onto the ST77735
 // lab 1
-// TA: ???
+// TA: Cody Horton, Lavanya Venkatesan
 // last revised: 1/28/2017 
 
 #include <stdint.h>

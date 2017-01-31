@@ -1,7 +1,7 @@
 // ******** fixed.c **************
 // Brandon Nguyen
 // Ryan Syed
-// 01/25/2017
+// 01/31/2017
 
 #include <stdint.h>
 #include "fixed.h"
@@ -116,13 +116,15 @@ void ST7735_uBinOut8(uint32_t n)
 
 #define AXIS_COLOR 0x0000
 #define PLOT_COLOR 0x12CE
-static uint32_t PlotH = LCD_HEIGHT;
-static uint32_t PlotW = LCD_WIDTH;
+static uint32_t PlotH = LCD_HEIGHT; // how much pixel space in the Y dimension
+static uint32_t PlotW = LCD_WIDTH;  // how much pixel space in the X dimension
 static uint32_t OriginX = 0;
 static uint32_t OriginY = 0;
-static int32_t MinX, MaxX, MinY, MaxY, VirtualW, VirtualH;
-static int32_t AbsoluteDimension;
-static int32_t VirtualDimension;
+
+static int32_t MinX, MaxX, MinY, MaxY;
+static int32_t VirtualW, VirtualH;  // how large our virtual space is
+static int32_t AbsoluteDimension;   // used for having a shared x and y scale
+static int32_t VirtualDimension;    // used for having a shared x and y scale
 
 // Converts a set of virtual coordinates to pixel location
 // vX and vY are virtual coordinates
@@ -171,8 +173,11 @@ void ST7735_XYplotInit(char *title, int32_t minX, int32_t maxX, int32_t minY, in
 
   OriginY = CHAR_HEIGHT * numLines;
   PlotH = LCD_HEIGHT - OriginY;
+  
   VirtualW = MaxX-MinX;
   VirtualH = MaxY-MinY;
+  
+  // pick the smaller dimension to scale by
   if(PlotH > PlotW)
   {
     AbsoluteDimension = PlotW;
@@ -214,6 +219,3 @@ void ST7735_XYplot(uint32_t num, int32_t bufX[], int32_t bufY[])
     }
   }
 }
-
-
-

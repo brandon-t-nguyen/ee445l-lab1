@@ -67,7 +67,7 @@ void ST7735_XYplotInit(char *title, int32_t minX, int32_t maxX, int32_t minY, in
  assumes ST7735_XYplotInit has been previously called
  neglect any points outside the minX maxY minY maxY bounds
 */
-void ST7735_XYplot(uint32_t num, int32_t bufX[], int32_t bufY[]);
+void ST7735_XYplot(uint32_t num, const int32_t bufX[], const int32_t bufY[]);
 
 
 

@@ -33,10 +33,7 @@ void ST7735_sDecOut3(int32_t n)
   ST7735_OutChar('.');
   n = n - currentDigit * 1000;
 
-  // here's a unrolled and rolled implementation
-  //#define UNROLL
-  #if defined UNROLL
-  //////////////////////////////////////////////////
+  // here's an unrolled implementation
   currentDigit = n/100;
   ST7735_OutChar('0' + currentDigit);
   n = n - currentDigit * 100;
@@ -47,18 +44,6 @@ void ST7735_sDecOut3(int32_t n)
 
   // n is already < 10
   ST7735_OutChar('0' + n);
-  //////////////////////////////////////////////////
-  #undef UNROLL
-  #else
-  //////////////////////////////////////////////////
-  for(int32_t divider=100; divider > 0; divider/=10)
-  {
-    currentDigit = n/divider;
-    ST7735_OutChar('0' + currentDigit);
-    n = n - currentDigit * divider;
-  }
-  //////////////////////////////////////////////////
-  #endif
 }
 
 void ST7735_uBinOut8(uint32_t n)
@@ -207,7 +192,7 @@ void ST7735_XYplotInit(char *title, int32_t minX, int32_t maxX, int32_t minY, in
   }
 }
 
-void ST7735_XYplot(uint32_t num, int32_t bufX[], int32_t bufY[])
+void ST7735_XYplot(uint32_t num, const int32_t bufX[], const int32_t bufY[])
 {
   uint32_t x, y;
   for(uint32_t i = 0; i < num; ++i)

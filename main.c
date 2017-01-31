@@ -117,7 +117,7 @@ int main(void){uint32_t i;
     ST7735_FillScreen(0);  // set screen to black
     ST7735_SetCursor(0,0);
     printf("ST7735_uBinOut8\r");
-    for(i=0; i<ARRAYLEN(outTests1); i++){
+    for(i=0; i<ARRAYLEN(outTests2); i++){
       ST7735_uBinOut8(outTests2[i].InNumber);  // your solution
       ST7735_OutString((char*)outTests2[i].OutBuffer); // expected solution
     }
